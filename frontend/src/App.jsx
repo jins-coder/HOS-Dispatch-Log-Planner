@@ -15,6 +15,8 @@ import MapView from './components/MapView.jsx';
 import EldLogSheet from './components/EldLogSheet.jsx';
 import MilestonesTimeline from './components/MilestonesTimeline.jsx';
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 export default function App() {
   const [currentLoc, setCurrentLoc] = useState('Chicago, IL');
   const [pickupLoc, setPickupLoc] = useState('St. Louis, MO');
@@ -42,7 +44,7 @@ export default function App() {
     setErrorMsg(null);
 
     try {
-      const res = await fetch('/api/plan-trip/', {
+      const res = await fetch(`${API_BASE}/api/plan-trip/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -74,7 +76,7 @@ export default function App() {
     if (!mode) return;
 
     try {
-      const res = await fetch(`/api/geocode/?lat=${lat}&lon=${lng}`);
+      const res = await fetch(`${API_BASE}/api/geocode/?lat=${lat}&lon=${lng}`);
       const data = await res.json();
       const disp = data.display_name || `${lat.toFixed(3)}, ${lng.toFixed(3)}`;
 
@@ -205,7 +207,7 @@ export default function App() {
             setPickingMode={setPickingMode}
             onSubmit={handlePlanTrip}
             loading={loading}
-            apiBaseUrl="/api"
+            apiBaseUrl={`${API_BASE}/api`}
           />
 
           <div className="glass-card" style={{ display: 'flex', flexDirection: 'column' }}>
