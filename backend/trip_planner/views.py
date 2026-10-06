@@ -16,13 +16,34 @@ class GeocodeView(APIView):
         if lat and lon:
             try:
                 url = f"https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lon}&format=json"
-                res = requests.get(url, headers={"User-Agent": "HOSPlanner/1.0"}, timeout=3)
+                res = requests.get(url, headers={"User-Agent": "HOSPlannerApp/2.0"}, timeout=4.5)
                 if res.status_code == 200:
                     data = res.json()
                     addr = data.get("address", {})
-                    city = addr.get("city") or addr.get("town") or addr.get("county") or "Location"
+                    place = (
+                        addr.get("city")
+                        or addr.get("town")
+                        or addr.get("village")
+                        or addr.get("hamlet")
+                        or addr.get("municipality")
+                        or addr.get("suburb")
+                        or addr.get("county")
+                        or addr.get("state_district")
+                    )
                     state = addr.get("state") or addr.get("country", "")
-                    disp = f"{city}, {state}" if state else city
+                    if place and state:
+                        disp = f"{place}, {state}"
+                    elif place:
+                        disp = place
+                    elif state:
+                        disp = state
+                    elif data.get("name"):
+                        disp = data["name"]
+                    elif data.get("display_name"):
+                        parts = [p.strip() for p in data["display_name"].split(",")]
+                        disp = ", ".join(parts[:2]) if len(parts) >= 2 else data["display_name"]
+                    else:
+                        disp = f"{float(lat):.3f}, {float(lon):.3f}"
                     return Response({"display_name": disp, "lat": float(lat), "lon": float(lon)})
             except Exception:
                 pass

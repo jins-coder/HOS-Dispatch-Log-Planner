@@ -18,10 +18,10 @@ import MilestonesTimeline from './components/MilestonesTimeline.jsx';
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
 export default function App() {
-  const [currentLoc, setCurrentLoc] = useState('');
-  const [pickupLoc, setPickupLoc] = useState('');
-  const [dropoffLoc, setDropoffLoc] = useState('');
-  const [cycleUsed, setCycleUsed] = useState(0.0);
+  const [currentLoc, setCurrentLoc] = useState('Chicago, IL');
+  const [pickupLoc, setPickupLoc] = useState('Miami, FL');
+  const [dropoffLoc, setDropoffLoc] = useState('Dallas, TX');
+  const [cycleUsed, setCycleUsed] = useState(12.0);
 
   const [pickingMode, setPickingMode] = useState(null);
   const [previewPins, setPreviewPins] = useState({});
@@ -32,12 +32,32 @@ export default function App() {
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const [errorMsg, setErrorMsg] = useState(null);
 
+  useEffect(() => {
+    handlePlanTrip({
+      current_location: 'Chicago, IL',
+      pickup_location: 'Miami, FL',
+      dropoff_location: 'Dallas, TX',
+      current_cycle_used: 12.0
+    });
+  }, []);
+
   const handlePlanTrip = async (params) => {
+    const buildParam = (val, pin) => {
+      if (pin && typeof pin.lat === 'number' && typeof pin.lon === 'number') {
+        return {
+          lat: pin.lat,
+          lon: pin.lon,
+          display_name: val && val !== 'Location' ? val : (pin.name && pin.name !== 'Location' ? pin.name : `${pin.lat.toFixed(3)}, ${pin.lon.toFixed(3)}`)
+        };
+      }
+      return val;
+    };
+
     const payload = params || {
-      current_location: currentLoc,
-      pickup_location: pickupLoc,
-      dropoff_location: dropoffLoc,
-      current_cycle_used: Number(cycleUsed)
+      current_location: buildParam(currentLoc, previewPins.current),
+      pickup_location: buildParam(pickupLoc, previewPins.pickup),
+      dropoff_location: buildParam(dropoffLoc, previewPins.dropoff),
+      current_cycle_used: Number(cycleUsed || 0)
     };
 
     setLoading(true);
@@ -78,7 +98,8 @@ export default function App() {
     try {
       const res = await fetch(`${API_BASE}/api/geocode/?lat=${lat}&lon=${lng}`);
       const data = await res.json();
-      const disp = data.display_name || `${lat.toFixed(3)}, ${lng.toFixed(3)}`;
+      const rawName = data && data.display_name && data.display_name !== 'Location' ? data.display_name : null;
+      const disp = rawName || `${lat.toFixed(3)}, ${lng.toFixed(3)}`;
 
       if (mode === 'current') {
         setCurrentLoc(disp);
