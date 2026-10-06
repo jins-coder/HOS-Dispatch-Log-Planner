@@ -2,9 +2,8 @@ services:
   - type: web
     name: hos-planner-api
     runtime: python
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
-    startCommand: gunicorn eld.wsgi:application
+    buildCommand: pip install -r backend/requirements.txt && python backend/manage.py migrate && python backend/manage.py collectstatic --noinput
+    startCommand: gunicorn --chdir backend eld.wsgi:application
     envVars:
       - key: DEBUG
         value: "False"
@@ -12,3 +11,5 @@ services:
         generateValue: true
       - key: ALLOWED_HOSTS
         value: "*"
+      - key: PYTHONPATH
+        value: "backend"
