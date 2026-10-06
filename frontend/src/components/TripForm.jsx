@@ -8,8 +8,17 @@ export default function TripForm({
   dropoffLoc, setDropoffLoc,
   cycleUsed, setCycleUsed,
   pickingMode, setPickingMode,
-  onSubmit, loading, apiBaseUrl = '/api'
+  onSubmit, onClear, loading, apiBaseUrl = '/api'
 }) {
+  const handleClear = () => {
+    setCurrentLoc('');
+    setPickupLoc('');
+    setDropoffLoc('');
+    setCycleUsed(0);
+    setPickingMode(null);
+    if (onClear) onClear();
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!currentLoc || !pickupLoc || !dropoffLoc) return;
@@ -23,16 +32,25 @@ export default function TripForm({
   };
 
   return (
-    <div className="glass-card">
+    <div className="glass-card trip-form-card">
       <div className="card-title-group">
         <h2 className="card-title">
           <Route size={18} />
           Dispatch & HOS Parameters
         </h2>
-        <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600 }}>49 CFR § 395</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <button
+            type="button"
+            onClick={handleClear}
+            className="clear-form-btn"
+          >
+            Clear Form
+          </button>
+          <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600 }}>49 CFR § 395</span>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="trip-form-body">
         <LocationAutocomplete
           label="1. Starting Location (Origin)"
           value={currentLoc}

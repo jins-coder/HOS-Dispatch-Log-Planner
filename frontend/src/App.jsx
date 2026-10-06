@@ -206,6 +206,12 @@ export default function App() {
             pickingMode={pickingMode}
             setPickingMode={setPickingMode}
             onSubmit={handlePlanTrip}
+            onClear={() => {
+              setPlanResult(null);
+              setPreviewPins({});
+              setErrorMsg(null);
+              setNotice(null);
+            }}
             loading={loading}
             apiBaseUrl={`${API_BASE}/api`}
           />
