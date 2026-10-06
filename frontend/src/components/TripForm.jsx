@@ -36,9 +36,9 @@ export default function TripForm({
       <div className="card-title-group">
         <h2 className="card-title">
           <Route size={18} />
-          Dispatch & HOS Parameters
+          <span>Dispatch &amp; HOS</span>
         </h2>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexShrink: 0 }}>
           <button
             type="button"
             onClick={handleClear}
@@ -46,7 +46,9 @@ export default function TripForm({
           >
             Clear Form
           </button>
-          <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600 }}>49 CFR § 395</span>
+          <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600, whiteSpace: 'nowrap' }}>
+            49 CFR § 395
+          </span>
         </div>
       </div>
 
