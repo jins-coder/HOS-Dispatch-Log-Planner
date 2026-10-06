@@ -1,13 +1,6 @@
 import React from 'react';
-import { Bookmark, Route, ArrowRight } from 'lucide-react';
+import { Route, ArrowRight } from 'lucide-react';
 import LocationAutocomplete from './LocationAutocomplete.jsx';
-
-const PRESET_TRIPS = [
-  { label: "LA → Phoenix → Atlanta", current: "Los Angeles, CA", pickup: "Phoenix, AZ", dropoff: "Atlanta, GA", cycle: 14.5 },
-  { label: "Chicago → St. Louis → Dallas", current: "Chicago, IL", pickup: "St. Louis, MO", dropoff: "Dallas, TX", cycle: 8.0 },
-  { label: "Indianapolis → Cincinnati → Columbus", current: "Indianapolis, IN", pickup: "Cincinnati, OH", dropoff: "Columbus, OH", cycle: 25.0 },
-  { label: "Denver → Omaha → Chicago", current: "Denver, CO", pickup: "Omaha, NE", dropoff: "Chicago, IL", cycle: 62.0 }
-];
 
 export default function TripForm({
   currentLoc, setCurrentLoc,
@@ -17,20 +10,6 @@ export default function TripForm({
   pickingMode, setPickingMode,
   onSubmit, loading, apiBaseUrl = '/api'
 }) {
-  const applyPreset = (preset) => {
-    setCurrentLoc(preset.current);
-    setPickupLoc(preset.pickup);
-    setDropoffLoc(preset.dropoff);
-    setCycleUsed(preset.cycle);
-    setPickingMode(null);
-    onSubmit({
-      current_location: preset.current,
-      pickup_location: preset.pickup,
-      dropoff_location: preset.dropoff,
-      current_cycle_used: parseFloat(preset.cycle)
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!currentLoc || !pickupLoc || !dropoffLoc) return;
@@ -51,29 +30,6 @@ export default function TripForm({
           Dispatch & HOS Parameters
         </h2>
         <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600 }}>49 CFR § 395</span>
-      </div>
-
-      <div className="presets-section">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-          <div className="presets-label" style={{ marginBottom: 0 }}>
-            <Bookmark size={13} />
-            Route Templates
-          </div>
-          <button
-            type="button"
-            onClick={() => { setCurrentLoc(''); setPickupLoc(''); setDropoffLoc(''); setCycleUsed(0); setPickingMode(null); }}
-            style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '0.72rem', cursor: 'pointer', textDecoration: 'underline' }}
-          >
-            Clear Form
-          </button>
-        </div>
-        <div className="preset-chips">
-          {PRESET_TRIPS.map((p, idx) => (
-            <button key={idx} type="button" className="preset-btn" onClick={() => applyPreset(p)}>
-              <span>{p.label}</span>
-            </button>
-          ))}
-        </div>
       </div>
 
       <form onSubmit={handleSubmit}>

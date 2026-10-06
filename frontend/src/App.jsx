@@ -18,10 +18,10 @@ import MilestonesTimeline from './components/MilestonesTimeline.jsx';
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
 export default function App() {
-  const [currentLoc, setCurrentLoc] = useState('Chicago, IL');
-  const [pickupLoc, setPickupLoc] = useState('St. Louis, MO');
-  const [dropoffLoc, setDropoffLoc] = useState('Dallas, TX');
-  const [cycleUsed, setCycleUsed] = useState(12.0);
+  const [currentLoc, setCurrentLoc] = useState('');
+  const [pickupLoc, setPickupLoc] = useState('');
+  const [dropoffLoc, setDropoffLoc] = useState('');
+  const [cycleUsed, setCycleUsed] = useState(0.0);
 
   const [pickingMode, setPickingMode] = useState(null);
   const [previewPins, setPreviewPins] = useState({});
