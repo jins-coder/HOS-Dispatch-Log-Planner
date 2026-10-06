@@ -133,7 +133,7 @@ export default function App() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                 <h1 className="logo-title">HOS Dispatch &amp; Log Planner</h1>
-                <span className="logo-badge">49 CFR - 395</span>
+                <span className="logo-badge">49 CFR § 395</span>
               </div>
               <p style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
                 Property-Carrying Commercial Vehicle Operations (70h / 8-Day Rule)

@@ -50,7 +50,7 @@ export default function TripForm({
           <Route size={18} />
           Dispatch & HOS Parameters
         </h2>
-        <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600 }}>49 CFR - 395</span>
+        <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600 }}>49 CFR § 395</span>
       </div>
 
       <div className="presets-section">
