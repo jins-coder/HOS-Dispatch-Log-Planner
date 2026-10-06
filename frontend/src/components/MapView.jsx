@@ -32,6 +32,15 @@ export default function MapView({
 
       layerGroupRef.current = L.layerGroup().addTo(map);
       mapInstanceRef.current = map;
+
+      const resizeObserver = new ResizeObserver(() => {
+        map.invalidateSize();
+      });
+      resizeObserver.observe(mapContainerRef.current);
+
+      return () => {
+        resizeObserver.disconnect();
+      };
     }
   }, []);
 

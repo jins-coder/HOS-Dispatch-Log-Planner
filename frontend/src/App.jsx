@@ -210,7 +210,7 @@ export default function App() {
             apiBaseUrl={`${API_BASE}/api`}
           />
 
-          <div className="glass-card" style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="glass-card map-card-container">
             <div className="card-title-group">
               <h2 className="card-title">
                 <Truck size={20} />
